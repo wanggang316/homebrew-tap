@@ -9,8 +9,8 @@
 # Sparkle handles in-app updates after install; `auto_updates true` tells
 # Homebrew not to flag the post-Sparkle on-disk version as drift.
 cask "touch-code" do
-  version "0.4.0"
-  sha256 "f1e1b83c6f0a7ed37b10f8729e122d5911653b8a5a024adce47cf46a063acb18"
+  version "0.4.1"
+  sha256 "797727b54582f4c1a1958d7eef6a41998e1cfa468c80f770ca1b0db8871eef59"
 
   url "https://github.com/wanggang316/touch-code/releases/download/v#{version}/TouchCode-#{version}.dmg",
       verified: "github.com/wanggang316/touch-code/"
