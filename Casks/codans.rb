@@ -9,8 +9,8 @@
 # Sparkle handles in-app updates after install; `auto_updates true` tells
 # Homebrew not to flag the post-Sparkle on-disk version as drift.
 cask "codans" do
-  version "0.4.12"
-  sha256 "1ea6a4a7f3eb5f1032eb47e05faac32afc74bb275c29196b17be9b84ad52f7a4"
+  version "0.4.13"
+  sha256 "cc58b7dce6cf83fb55e15b2cbd2d5d4e40dd06e0300354b2c19ebf29949119cc"
 
   url "https://github.com/wanggang316/codans/releases/download/v#{version}/Codans-#{version}.dmg",
       verified: "github.com/wanggang316/codans/"
