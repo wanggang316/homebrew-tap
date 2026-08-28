@@ -1,0 +1,96 @@
+name: Update mtouch formula
+
+# Bumps Formula/mtouch.rb when a new mtouch release appears.
+#
+# This runs in the TAP repo on purpose, so it needs no cross-repo credential:
+# the default GITHUB_TOKEN can write to this repository, and the mtouch release
+# metadata is public. (The cask flow pushes FROM the product repo and therefore
+# needs a PAT; this one deliberately avoids minting another secret.)
+#
+# Trigger it by hand right after publishing a release for an immediate bump;
+# the schedule is only a safety net.
+
+on:
+  schedule:
+    - cron: '17 4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve the latest release and its checksum
+        id: rel
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TAG=$(gh release view --repo wanggang316/mtouch --json tagName -q .tagName)
+          VERSION="${TAG#v}"
+          ASSET="mtouch-${TAG}-macos-arm64.tar.gz"
+
+          # Prefer the published .sha256 over re-hashing: it is what the release
+          # pipeline actually signed off on, so a mismatch here means a corrupted
+          # or tampered asset rather than a formula bug.
+          SUMS=$(mktemp)
+          gh release download "$TAG" --repo wanggang316/mtouch \
+            --pattern "${ASSET}.sha256" --output "$SUMS" --clobber
+          SHA=$(cut -d' ' -f1 "$SUMS")
+          if [ ${#SHA} -ne 64 ]; then
+            echo "::error::unexpected checksum in ${ASSET}.sha256: '$SHA'"; exit 1
+          fi
+
+          # Verify the checksum describes the asset we are about to point at.
+          TARBALL=$(mktemp)
+          gh release download "$TAG" --repo wanggang316/mtouch \
+            --pattern "$ASSET" --output "$TARBALL" --clobber
+          ACTUAL=$(sha256sum "$TARBALL" | cut -d' ' -f1)
+          if [ "$ACTUAL" != "$SHA" ]; then
+            echo "::error::asset checksum $ACTUAL does not match published $SHA"; exit 1
+          fi
+
+          {
+            echo "tag=$TAG"
+            echo "version=$VERSION"
+            echo "sha=$SHA"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Rewrite the formula if it moved
+        id: bump
+        run: |
+          set -euo pipefail
+          F=Formula/mtouch.rb
+          CURRENT=$(grep -oE 'version "[^"]+"' "$F" | head -1 | cut -d'"' -f2)
+          if [ "$CURRENT" = "${{ steps.rel.outputs.version }}" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "already at $CURRENT"
+            exit 0
+          fi
+          python3 - "$F" "${{ steps.rel.outputs.tag }}" "${{ steps.rel.outputs.version }}" "${{ steps.rel.outputs.sha }}" <<'PY'
+          import re, sys
+          path, tag, version, sha = sys.argv[1:5]
+          s = open(path).read()
+          s = re.sub(r'url "[^"]+"',
+                     f'url "https://github.com/wanggang316/mtouch/releases/download/{tag}/mtouch-{tag}-macos-arm64.tar.gz"',
+                     s, count=1)
+          s = re.sub(r'version "[^"]+"', f'version "{version}"', s, count=1)
+          s = re.sub(r'sha256 "[^"]+"', f'sha256 "{sha}"', s, count=1)
+          open(path, "w").write(s)
+          PY
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "bumped $CURRENT -> ${{ steps.rel.outputs.version }}"
+
+      - name: Commit
+        if: steps.bump.outputs.changed == 'true'
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Formula/mtouch.rb
+          git commit -m "chore: mtouch ${{ steps.rel.outputs.version }}"
+          git push
