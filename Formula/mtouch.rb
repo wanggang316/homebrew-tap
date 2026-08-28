@@ -7,9 +7,9 @@
 class Mtouch < Formula
   desc "Agent-facing macOS automation CLI: perceive, act, verify, and leave evidence"
   homepage "https://github.com/wanggang316/mtouch"
-  url "https://github.com/wanggang316/mtouch/releases/download/v0.2.1/mtouch-v0.2.1-macos-arm64.tar.gz"
-  version "0.2.1"
-  sha256 "0f4109daee7b8386542c02218c15221339298c011c5d5322744896e3665e135f"
+  url "https://github.com/wanggang316/mtouch/releases/download/v0.2.2/mtouch-v0.2.2-macos-arm64.tar.gz"
+  version "0.2.2"
+  sha256 "df1fc24ff209ba6f53a09bf1cdc003fd6465d9a0d4ed7890a3707dbfb731e777"
   license "MIT"
 
   livecheck do
