@@ -1,9 +1,9 @@
 cask "youskill" do
   arch arm: "aarch64", intel: "x64"
 
-  version "0.11.0"
-  sha256 arm:   "44b4acd1ff6ddc594e6d1ce439f484d00f376c3682f4c39cbc6e4968e6fd673c",
-         intel: "5d61729a77452ce8136dd70e5b2225bcff8bd17370c63da6da5bbd6de7add342"
+  version "0.11.1"
+  sha256 arm:   "dbfcbd29d84d955d73be35f8f378a5110899d9b45d8f3d6c3f209be7f058775d",
+         intel: "79a3c4866331d76e699f57b27001b59e5316109d07abc0080065dd6cc62ec788"
 
   url "https://github.com/wanggang316/you-skill/releases/download/v#{version}/YouSkill_#{version}_#{arch}.dmg"
   name "YouSkill"
