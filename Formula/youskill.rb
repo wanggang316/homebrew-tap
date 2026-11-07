@@ -10,12 +10,12 @@ class Youskill < Formula
 
   on_macos do
     on_arm do
-      url "https://github.com/wanggang316/you-skill/releases/download/v0.12.0/youskill-v0.12.0-aarch64-apple-darwin.tar.gz"
-      sha256 "b335af10218600cb5f4298f6dbad5113dda561ac4176ec3ed308fa653333c76e"
+      url "https://github.com/wanggang316/you-skill/releases/download/v0.12.1/youskill-v0.12.1-aarch64-apple-darwin.tar.gz"
+      sha256 "9e11623785207ae30f49bfb8634b824ae3897a5e3f21e65dda98ab9312ff671b"
     end
     on_intel do
-      url "https://github.com/wanggang316/you-skill/releases/download/v0.12.0/youskill-v0.12.0-x86_64-apple-darwin.tar.gz"
-      sha256 "4b3c5a81bc1c882f9b3d182b9e3a3911cc5c9d536e61a02d4178ed54909747b7"
+      url "https://github.com/wanggang316/you-skill/releases/download/v0.12.1/youskill-v0.12.1-x86_64-apple-darwin.tar.gz"
+      sha256 "9af6c22d0c231abde9016c333a0c2d630c717943910cc4345fc796c454b26965"
     end
   end
 
