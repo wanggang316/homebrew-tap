@@ -9,8 +9,8 @@
 # Sparkle handles in-app updates after install; `auto_updates true` tells
 # Homebrew not to flag the post-Sparkle on-disk version as drift.
 cask "linko" do
-  version "0.1.7"
-  sha256 "fc9d86db5e0009797127baa302f6bf20077696acc46efa418e22f57f91afb8cf"
+  version "0.2.0"
+  sha256 "0577985bf25d4bb07ee712e8e53ad198231eee1761a0dbd28f799257aa2d1c97"
 
   url "https://github.com/wanggang316/linko/releases/download/v#{version}/Linko-#{version}.dmg",
       verified: "github.com/wanggang316/linko/"
