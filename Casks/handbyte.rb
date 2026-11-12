@@ -9,8 +9,8 @@
 # Sparkle updates the app in place after install; `auto_updates true` tells
 # Homebrew not to report that as drift.
 cask "handbyte" do
-  version "0.2.0"
-  sha256 "fa9be0be84421fbcbf34be62c59ffc2e59e774b82413c3e2bd6fdcfbd26aca79"
+  version "0.2.1"
+  sha256 "f2212c0d86d505777b32829e9f6ae4d1745985148d565b262755827b0d7d3928"
 
   url "https://github.com/wanggang316/handbyte-macos/releases/download/v#{version}/Handbyte-#{version}.dmg",
       verified: "github.com/wanggang316/handbyte-macos/"
